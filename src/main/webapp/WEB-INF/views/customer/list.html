@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>List of customers</title>
+    <th:block th:replace="layout/head :: head" />
+    <style>
+        table th{
+            text-align: center;
+        }
+        table td{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav class="navbar bg-body-tertiary">
+                <div class="container-fluid">
+                    <a class="navbar-brand">List of customers</a>
+                    <div class="d-flex" style="gap: 10px;">
+                        <a href="/customers/transfer">
+                            <button class="btn btn-outline-light" type="button">
+                                <i class="fas fa-history"></i>
+                                Transfer histories
+                            </button>
+                        </a>
+                        <a href="/customers/create">
+                            <button class="btn btn-outline-light" type="button">
+                                <i class="far fa-plus-square"></i>
+                                Add new customer
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <div class="content">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>FullName</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>Balance</th>
+                    <th colspan="5">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <th:block th:each="item : ${customers}">
+                    <tr>
+                        <td th:text="${item.id}"></td>
+                        <td th:text="${item.fullName}"></td>
+                        <td th:text="${item.email}"></td>
+                        <td th:text="${item.phone}"></td>
+                        <td th:text="${item.address}"></td>
+                        <td th:text="${item.balance}" ></td>
+
+                        <td>
+                                <button th:if="${item.getDeleted()} == true" class="btn btn-outline-secondary" disabled>
+                                    <a th:href="@{/customers/edit/__${item.id}__}" >
+                                        <i  class="far fa-edit"></i>
+                                    </a>
+                                </button>
+                                <button th:if="${item.getDeleted()} == false" class="btn btn-outline-secondary" >
+                                    <a th:href="@{/customers/edit/__${item.id}__}" >
+                                        <i  class="far fa-edit"></i>
+                                    </a>
+                                </button>
+
+                        </td>
+
+                        <td>
+                            <button th:if="${item.getDeleted()} == true" class="btn btn-outline-success" disabled>
+                                <a th:href="@{/customers/deposit/__${item.id}__}" >
+                                    <i class="fas fa-plus"></i>
+                                </a>
+                            </button>
+                            <button th:if="${item.getDeleted()} == false" class="btn btn-outline-success" >
+                                <a th:href="@{/customers/deposit/__${item.id}__}" >
+                                    <i class="fas fa-plus"></i>
+                                </a>
+                            </button>
+                        </td>
+                        <td>
+                            <button th:if="${item.getDeleted()} == true" class="btn btn-outline-success" disabled >
+                                <a th:href="@{/customers/withdraw/__${item.id}__}"  >
+                                    <i class="fas fa-minus"></i>
+                                </a>
+                            </button>
+                            <button th:if="${item.getDeleted() == false && item.getBalance() == 0}" class="btn btn-outline-success" disabled>
+                                <a th:href="@{/customers/withdraw/__${item.id}__}">
+                                    <i class="fas fa-minus"></i>
+                                </a>
+                            </button>
+                            <button th:if="${item.getDeleted() == false && item.getBalance() != 0}" class="btn btn-outline-success">
+                                <a th:href="@{/customers/withdraw/__${item.id}__}">
+                                    <i class="fas fa-minus"></i>
+                                </a>
+                            </button>
+
+                        </td>
+                        <td>
+                            <button th:if="${item.getDeleted()} == true" class="btn btn-outline-primary" disabled >
+                                <a th:href="@{/customers/transfer/__${item.id}__}"  >
+                                    <i class="fas fa-exchange-alt"></i>
+                                </a>
+                            </button>
+
+                            <button th:if="${item.getDeleted() == false && item.getBalance() == 0}" class="btn btn-outline-primary" disabled>
+                                <a th:href="@{/customers/transfer/__${item.id}__}">
+                                    <i class="fas fa-exchange-alt"></i>
+                                </a>
+                            </button>
+                            <button th:if="${item.getDeleted() == false && item.getBalance() != 0}" class="btn btn-outline-primary">
+                                <a th:href="@{/customers/transfer/__${item.id}__}">
+                                    <i class="fas fa-exchange-alt"></i>
+                                </a>
+                            </button>
+                        </td>
+                        <td>
+                            <a class="btn btn-outline-danger" th:href= "@{/customers/delete/__${item.id}__}" th:if="${item.getDeleted()} == true"><i class="fas fa-lock"></i></a>
+                            <a class="btn btn-outline-danger" th:href= "@{/customers/delete/__${item.id}__}"  th:if="${item.getDeleted()} == false"><i class="fas fa-unlock"></i></a>
+                        </td>
+
+                    </tr>
+                </th:block>
+
+<!--                    <tr>-->
+<!--                        <td>2</td>-->
+<!--                        <td>Mark 2</td>-->
+<!--                        <td>Otto2@co.cc</td>-->
+<!--                        <td>3456</td>-->
+<!--                        <td>39 Nguyễn Tri Phương</td>-->
+<!--                        <td>10.000</td>-->
+<!--                        <td>-->
+<!--                            <button class="btn btn-outline-secondary">-->
+<!--                                <i class="far fa-edit"></i>-->
+<!--                            </button>-->
+<!--                        </td>-->
+<!--                        <td>-->
+<!--                            <button class="btn btn-outline-success">-->
+<!--                                <i class="fas fa-plus"></i>-->
+<!--                            </button>-->
+<!--                        </td>-->
+<!--                        <td>-->
+<!--                            <button class="btn btn-outline-warning">-->
+<!--                                <i class="fas fa-minus"></i>-->
+<!--                            </button>-->
+<!--                        </td>-->
+<!--                        <td>-->
+<!--                            <button class="btn btn-outline-primary">-->
+<!--                                <i class="fas fa-exchange-alt"></i>-->
+<!--                            </button>-->
+<!--                        </td>-->
+<!--                        <td>-->
+<!--                            <button class="btn btn-outline-danger">-->
+<!--                                <i class="fas fa-ban"></i>-->
+<!--                            </button>-->
+<!--                        </td>-->
+<!--                    </tr>-->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <th:block th:if="${success == true}">
+        <footer class="container-fluid success">
+            <div class="container">
+                <div class="notification">
+                    <p class="success" th:text="${message}"></p>
+                </div>
+            </div>
+        </footer>
+    </th:block>
+
+    <th:block th:if="${success == false}">
+        <footer class="container-fluid error">
+            <div class="container">
+                <div class="notification">
+                    <p class="error" th:text="${message}"></p>
+                </div>
+            </div>
+        </footer>
+    </th:block>
+</body>
+</html>

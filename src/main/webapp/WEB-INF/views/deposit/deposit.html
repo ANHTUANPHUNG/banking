@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Create customer</title>
+  <th:block th:replace="layout/head :: head"/>
+</head>
+<body>
+<div class="container">
+  <header>
+    <nav class="navbar bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand">              Deposit money into customer's account
+        </a>
+        <div class="d-flex" style="gap: 10px;">
+          <a href="/customers">
+            <button class="btn btn-outline-light" type="button">
+              <i class="fas fa-list-ul"></i>
+              Customer List
+
+            </button>
+          </a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <div class="content">
+    <form th:object="${deposit}"  method="post" >
+      <div class="row mb-3 mt-3">
+        <div class="col-lg-6" >
+          <label for="id" class="form-label">Customer Id</label>
+          <input type="text" class="form-control" id="id" th:field="*{customer.id}" disabled>
+        </div>
+        <div class="col-lg-6" >
+          <label for="fullName" class="form-label">Full Name</label>
+          <input type="text" class="form-control" id="fullName" th:field="*{customer.fullName}" disabled>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-lg-6" >
+          <label for="balance" class="form-label">Current balance($)</label>
+          <input type="number" class="form-control" id="balance" th:field="*{customer.balance}" disabled>
+        </div>
+        <div class="col-lg-6" >
+          <label for="transactionAmount" class="form-label">Transaction Amount</label>
+          <input type="number" class="form-control" id="transactionAmount" th:field="*{transactionAmount}" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+        </div>
+      </div>
+
+      <div class="row pt-3">
+        <div class="col-lg-3">
+          <button type="submit" class="btn btn-outline-success" th:href="@{/customers/deposit/__${deposit.customer.id}__}">
+              <i class="fas fa-plus"></i>
+              Deposit
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!--    <footer class="container-fluid">-->
+<!--        <div class="container">-->
+<!--            <div class="notification">-->
+<!--                <p th:text="${message}"></p>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </footer>-->
+
+<th:block th:if="${success == true}">
+  <footer class="container-fluid success">
+    <div class="container">
+      <div class="notification">
+        <p class="success" th:text="${message}"></p>
+      </div>
+    </div>
+  </footer>
+</th:block>
+
+<th:block th:if="${success == false}">
+  <footer class="container-fluid error">
+    <div class="container">
+      <div class="notification">
+        <p class="error" th:text="${message}"></p>
+      </div>
+    </div>
+  </footer>
+</th:block>
+
+
+
+</body>
+</html>

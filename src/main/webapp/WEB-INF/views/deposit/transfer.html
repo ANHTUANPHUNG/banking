@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Create customer</title>
+  <th:block th:replace="layout/head :: head"/>
+</head>
+<body>
+<div class="container">
+  <header>
+    <nav class="navbar bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand">
+          Transfer money Information
+        </a>
+        <div class="d-flex" style="gap: 10px;">
+          <a href="/customers">
+            <button class="btn btn-outline-light" type="button">
+              <i class="fas fa-list-ul"></i>
+              Customer List
+
+            </button>
+          </a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <div class="content">
+    <form th:object="${transfer}"  method="post" >
+      <div class="row mb-3 mt-3">
+        <div class="col-lg-3" >
+          <label for="id" class="form-label">Sender Id</label>
+          <input type="text" class="form-control" id="id" th:field="*{sender.id}" disabled>
+        </div>
+        <div class="col-lg-3" >
+          <label for="fullName" class="form-label">Sender Name</label>
+          <input type="text" class="form-control" id="fullName" th:field="*{sender.fullName}" disabled>
+        </div>
+        <div class="col-lg-3" >
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email" th:field="*{sender.email}" disabled>
+        </div>
+        <div class="col-lg-3" >
+          <label for="balance" class="form-label">Sender Balance</label>
+          <input type="number" disabled class="form-control" id="balance" th:field="*{sender.balance}" >
+        </div>
+      </div>
+      <div class="row mb-3 mt-3">
+        <div class="col-lg-3">
+          <label for="sele" class="form-label">Recipient Name</label>
+          <select id="sele" name="id" class="form-control">
+            <option value="">-- Select a recipient --</option>
+            <th:block th:each="customer : ${customers}">
+              <option th:value="${customer.id}"  th:text="${'('+customer.id+')' + ' '+ customer.fullName}"></option>
+            </th:block>
+          </select>
+        </div>
+
+        <div class="col-lg-3" >
+          <label for="transferAmount" class="form-label">Transfer Amount($)</label>
+          <input type="text" class="form-control" id="transferAmount" th:field="*{transferAmount}" oninput="this.value = this.value.replace(/[^0-9]/g, '');" >
+        </div>
+        <div class="col-lg-3" >
+          <label for="fees" class="form-label">Fees($)</label>
+          <input type="email" class="form-control" id="fees" th:field="*{fees}" disabled>
+        </div>
+        <div class="col-lg-3" >
+          <label for="transactionAmount" class="form-label">Total amount of transaction($)</label>
+          <input type="number" disabled class="form-control" id="transactionAmount" th:field="*{transactionAmount}" >
+        </div>
+      </div>
+
+      <!--      <div class="row mb-3">-->
+
+<!--      </div>-->
+
+      <div class="row pt-3">
+        <div class="col-lg-3">
+          <button type="submit" class="btn btn-outline-primary" th:href="@{/customers/transfer/__${transfer.sender.id}__}">
+              <i class="fas fa-exchange-alt"></i>
+              Transfer
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+<th:block th:if="${success == true}">
+  <footer class="container-fluid success">
+    <div class="container">
+      <div class="notification">
+        <p class="success" th:text="${message}"></p>
+      </div>
+    </div>
+  </footer>
+</th:block>
+
+<th:block th:if="${success == false}">
+  <footer class="container-fluid error">
+    <div class="container">
+      <div class="notification">
+        <p class="error" th:text="${message}"></p>
+      </div>
+    </div>
+  </footer>
+</th:block>
+
+
+
+</body>
+</html>
